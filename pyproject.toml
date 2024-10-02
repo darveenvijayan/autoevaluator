@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "autoevaluator"
+version = "0.1.0"
+description = ""
+authors = ["Darveen Vijayan <+darveenvijayan.27@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+openai = "^1.51.0"
+instructor = "^1.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
