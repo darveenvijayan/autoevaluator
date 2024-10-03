@@ -1,6 +1,7 @@
 # AutoEvaluator: An LLM based LLM Evaluator :stuck_out_tongue_closed_eyes:
 
 AutoEvaluator is a Python library that speeds up the large language models (LLMs) output generation QC work. Built on top of Instructor, it provides a simple, transparent, and user-friendly API to identify the True Positives (TP), False Positives (FP), and False Negatives (FN) statements based the generated statement and ground truth provided. Get ready to supercharge your LLM workflows!
+
 [![Twitter Follow](https://img.shields.io/twitter/follow/DarveenVijayan?style=social)](https://twitter.com/DarveenVijayan)
 
 **Features:**
