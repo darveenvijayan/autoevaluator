@@ -1,6 +1,7 @@
 # AutoEvaluator: An LLM based LLM Evaluator :stuck_out_tongue_closed_eyes:
 
-This repository provides a toolkit for evaluating Large Language Model (LLM) outputs. It iddentifies the True Positives (TP), False Positives (FP), and False Negatives (FN) statements based the generated statement and ground truth provided.
+AutoEvaluator is a Python library that speeds up the large language models (LLMs) output generation QC work. Built on top of Instructor, it provides a simple, transparent, and user-friendly API to identify the True Positives (TP), False Positives (FP), and False Negatives (FN) statements based the generated statement and ground truth provided. Get ready to supercharge your LLM workflows!
+[![Twitter Follow](https://img.shields.io/twitter/follow/DarveenVijayan?style=social)](https://twitter.com/DarveenVijayan)
 
 **Features:**
 
@@ -10,7 +11,7 @@ This repository provides a toolkit for evaluating Large Language Model (LLM) out
 
 ### Installation
 
-autoevaluator requires Python 3.9 and several dependencies. You can install autoevaluator:
+Autoevaluator requires `Python 3.9` and several dependencies. You can install autoevaluator:
 
 ```bash
 pip install git+https://github.com/darveenvijayan/autoevaluator.git
