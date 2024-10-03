@@ -1,4 +1,4 @@
-# AutoEvaluator: An LLM based LLM Evaluation Toolkit :stuck_out_tongue_closed_eyes:
+# AutoEvaluator: An LLM based LLM Evaluator :stuck_out_tongue_closed_eyes:
 
 This repository provides a toolkit for evaluating Large Language Model (LLM) outputs. It iddentifies the True Positives (TP), False Positives (FP), and False Negatives (FN) statements based the generated statement and ground truth provided.
 
