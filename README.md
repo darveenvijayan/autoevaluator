@@ -2,9 +2,9 @@
 
 AutoEvaluator is a Python library that speeds up the large language models (LLMs) output generation QC work. It provides a simple, transparent, and user-friendly API to identify the True Positives (TP), False Positives (FP), and False Negatives (FN) statements based the generated statement and ground truth provided. Get ready to turbocharge your LLM evaluations!
 
+![Static Badge](https://img.shields.io/badge/Medium-LLMs%3A%20A%20Calculator%20for%20Words-blue?link=https%3A%2F%2Fmedium.com%2Fthe-modern-scientist%2Flarge-language-models-a-calculator-for-words-7ab4099d0cc9)
 [![Twitter Follow](https://img.shields.io/twitter/follow/DarveenVijayan?style=social)](https://twitter.com/DarveenVijayan)
 
-Check out my medium post: [LLMs: A Calculator for Words](https://medium.com/the-modern-scientist/large-language-models-a-calculator-for-words-7ab4099d0cc9)
 
 
 **Features:**
