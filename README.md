@@ -1,8 +1,6 @@
-# autoevaluator
+# Autoevaluator: An LLM based LLM Evaluation Toolkit :p
 
-## LLM Evaluation Toolkit
-
-This repository provides a toolkit for evaluating Large Language Model (LLM) outputs. It calculates and reports True Positives (TP), False Positives (FP), and False Negatives (FN).
+This repository provides a toolkit for evaluating Large Language Model (LLM) outputs. It iddentifies the True Positives (TP), False Positives (FP), and False Negatives (FN) statements based the generated statement and ground truth provided.
 
 **Features:**
 
@@ -37,7 +35,7 @@ os.environ["DEPLOYMENT"] = "<azure>/<not-azure>"
 3. **run autoevaluator**
 ```
 from autoevaluator import evaluate
-eval_results = evaluate(claim, ground_truth)
+eval_results = evaluate(generated_statement, ground_truth)
 ```
 
 3. **Output:**
