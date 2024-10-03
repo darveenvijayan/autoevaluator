@@ -5,7 +5,7 @@ This repository provides a toolkit for evaluating Large Language Model (LLM) out
 **Features:**
 
 * Evaluate LLM outputs against a reference dataset or human judgement.
-* Calculate TP, FP, and FN scores for various evaluation tasks.
+* Generate TP, FP, and FN sentences based on ground truth provided
 
 
 ### Installation
