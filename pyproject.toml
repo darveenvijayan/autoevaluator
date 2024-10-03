@@ -6,7 +6,7 @@ authors = ["Darveen Vijayan <+darveenvijayan.27@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.9"
 openai = "^1.51.0"
 instructor = "^1.5.0"
 
