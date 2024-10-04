@@ -25,11 +25,9 @@ def text_simplifier(text: str, model_name: str, client) -> TextSimplify:
         messages=[
             {
                 "role": "system",
-                "content": "**You're an expert English language scholar!** "
-                           "Your task is to break down this text into simple sentences "
-                           "that each express a complete thought and contain only "
-                           "a single independent clause. Split sentences with "
-                           "conjunctions or commas."
+                "content": """You're an expert in English language! You are also very detailed with your work.
+                               Your task is to break down the given text into simple sentences such that each sentence express a complete thought and contain only a single independent clause. 
+                               Split sentences with conjunctions or commas."""
             },
             {"role": "user", "content": f"text: {text}"},
         ],
