@@ -25,14 +25,18 @@ def text_simplifier(text: str, model_name: str, client) -> TextSimplify:
         messages=[
             {
                 "role": "system",
-                "content": """You're an expert in English language! You are also very detailed with your work.
+                "content": f"""You're an expert in English language! You are also very detailed with your work.
                                Your task is to break down the given text into simple sentences such that each sentence express a complete thought and contain only a single independent clause. 
                                Split sentences with conjunctions or commas.
-                               Do not use replace nouns with pronouns.
-                               Always reuse the names and nouns from the text.
+
+                               IMPORTANT!
+                                - Do not use replace nouns with pronouns.
+                                - Always reuse the names and nouns from the given text.
+
+                               text: {text}
                                """
             },
-            {"role": "user", "content": f"text: {text}"},
+            # {"role": "user", "content": f"text: {text}"},
         ],
     )
     return completions
