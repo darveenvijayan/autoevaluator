@@ -15,6 +15,7 @@ AutoEvaluator is a Python library that speeds up the large language models (LLMs
 
 * Evaluate LLM outputs against a reference dataset or human judgement.
 * Generate TP, FP, and FN sentences based on ground truth provided
+* Calculate Precision, Recall and F1 score
 
 
 ### Installation
@@ -50,6 +51,7 @@ eval_results = evaluate(generated_statement, ground_truth)
 3. **Output:**
     * The script will generate a dictionary with the following information:
         * TP, FP, and FN sentences
+        * Precision, Recall and F1 score
 
 **License:**
 

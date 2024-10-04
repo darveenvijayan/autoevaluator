@@ -33,12 +33,26 @@ def LLM_autoeval(claims: str, ground_truths: str, model_name: str, client: OpenA
                         
                         IMPORTANT: Each sentence can only have one label (TP / FP / FN)."""
 
-    completions = client.chat.completions.create(
+    eval_results = client.chat.completions.create(
         model=model_name,
         response_model=AutoEval,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"CLAIMS: {claims}\nTRUTHS: {ground_truths}"},
         ],
-    )
-    return completions
+    ).dict()
+
+    tp = len(eval_results['TP'])
+    fp = len(eval_results['FP'])
+    fn = len(eval_results['FN'])
+
+    # Calculate recall, handling division by zero
+    recall = tp / (tp + fn) if tp + fn > 0 else 0
+    eval_results['recall'] = recall
+    # Calculate precision, handling division by zero
+    precision = tp / (tp + fp) if tp + fp > 0 else 0
+    eval_results['precision'] = precision
+    # Calculate F1-score, handling division by zero and avoiding redundant calculations
+    f1_score = 2 * precision * recall / (precision + recall) if precision + recall > 0 else 0
+    eval_results['f1_score'] = f1_score
+    return eval_results
