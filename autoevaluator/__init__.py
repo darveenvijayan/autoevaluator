@@ -31,9 +31,6 @@ def evaluate(claim: str, ground_truth: str) -> Dict:
     claim_string = '\n'.join(simplified_claim)
     ground_truth_string = '\n'.join(simplified_ground_truth)
 
-    # claim_string = claim
-    # ground_truth_string = ground_truth
-
     # Perform evaluation
     evaluation_results = LLM_autoeval(claim_string, ground_truth_string, model_name, client).dict()
 
