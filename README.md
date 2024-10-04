@@ -22,7 +22,7 @@ AutoEvaluator is a Python library that speeds up the large language models (LLMs
 Autoevaluator requires `Python 3.9` and several dependencies. You can install autoevaluator:
 
 ```bash
-pip install git+https://github.com/darveenvijayan/autoevaluator.git
+pip install autoevaluator
 ```
 
 ### Usage
