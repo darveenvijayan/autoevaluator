@@ -22,11 +22,13 @@ def LLM_autoeval(claims: str, ground_truths: str, model_name: str, client: OpenA
         AutoEval: A Pydantic model containing classified statements (TP, FP, FN).
     """
 
-    system_prompt = (
-        "**You're an expert in logic and English. Your task is as follows:**\n"
-        "  1. For each claim sentence, check if the information is supported by any of the truth sentences. If yes, it's a True Positive. If not, it's a False Positive.\n"
-        "  2. For each truth sentence, check if the information is supported by any of the claim sentences. If yes, it's a False Negative.\n"
-        "  Each sentence can only have one label (TP, FP, FN)."
+    system_prompt ="""You're an expert in logic and English. 
+                        Your task is as follows:"
+                        1. For each CLAIMS sentence, if the sentence is supported by any of the TRUTHS sentences, it is labeled as True Positive (TP). 
+                        2. For each CLAIMS sentence, if the sentence is NOT supported by any of the TRUTHS sentences, it is labeled as False Positive (FP).
+                        3. For each TRUTHS sentence, if the sentence is NOT supported by any of the CLAIMS sentences, it is labeled as False Negative (FN).
+                        
+                        IMPORTANT: Each sentence can only have one label (TP / FP / FN)."""
     )
 
     completions = client.chat.completions.create(
