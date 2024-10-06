@@ -19,7 +19,7 @@ def LLM_autoeval(claims: str, ground_truths: str, model_name: str, client: OpenA
         client (OpenAI | AzureOpenAI): An instance of the OpenAI or AzureOpenAI client.
 
     Returns:
-        AutoEval: A Pydantic model containing classified statements (TP, FP, FN).
+        AutoEval: A Pydantic model containing classified statements (TP, FP, FN, recall, precision, f1_score).
     """
 
     system_prompt ="""You're an expert in logic and English. 
