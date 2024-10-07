@@ -1,5 +1,6 @@
 import os
 from openai import OpenAI, AzureOpenAI
+import instructor
 
 def setup_client():
     if os.environ["DEPLOYMENT"] == "azure":
@@ -10,4 +11,7 @@ def setup_client():
     else:
         client = OpenAI()
         model = "gpt-3.5-turbo"
+
+    # Apply the patch to the OpenAI client
+    client = instructor.from_openai(client)
     return client, model

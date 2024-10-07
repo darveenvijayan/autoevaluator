@@ -3,11 +3,9 @@ from .simplify import text_simplifier
 from .eval import LLM_autoeval
 from typing import Dict
 from openai import OpenAI, AzureOpenAI
-import instructor
 
 client, model_name =  setup_client()
-# Apply the patch to the OpenAI client
-client = instructor.from_openai(client)
+
 
 def evaluate(claim: str, ground_truth: str) -> Dict:
     """
@@ -20,7 +18,7 @@ def evaluate(claim: str, ground_truth: str) -> Dict:
         client (object): The client object used to interact with the language model.
 
     Returns:
-        Dict: A dictionary containing the evaluation results (TP, FP, FN).
+        Dict: A dictionary containing the evaluation results (TP, FP, FN, recall, precision, f1_score).
     """
 
     # Simplify claim and ground truth
