@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "autoevaluator"
-version = "0.2.3"
+version = "0.2.4"
 description = ""
 authors = ["Darveen Vijayan <+darveenvijayan.27@gmail.com>"]
 readme = "README.md"
@@ -10,6 +10,7 @@ python = "^3.9"
 openai = "^1.51.0"
 instructor = "^1.5.0"
 pytest = "^8.3.3"
+typing-extensions = "^4.12.2"
 
 
 [build-system]
