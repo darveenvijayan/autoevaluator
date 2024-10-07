@@ -1,4 +1,4 @@
-from autoevaluator import evaluate
+from autoevaluator import evaluate, setup_client
 import pytest
 
 # Example ground truth and generated statement for testing

@@ -44,8 +44,26 @@ os.environ["DEPLOYMENT"] = "<azure>/<not-azure>"
 
 3. **run autoevaluator**
 ```
+# Import the evaluate function from the autoevaluator module
 from autoevaluator import evaluate
-eval_results = evaluate(generated_statement, ground_truth)
+
+# Define the claim to be evaluated
+claim = 'Feynmann was born in 1918 in Malaysia'
+
+# Define the ground truth statement
+ground_truth = 'Feynmann was born in 1918 in America.'
+
+# Evaluate the claim against the ground truth
+evaluate(claim, ground_truth)
+
+# output
+{'TP': ['Feynmann was born in 1918.'],
+ 'FP': ['Feynmann was born in Malaysia.'],
+ 'FN': ['Feynmann was born in America.'],
+ 'recall': 0.5,
+ 'precision': 0.5,
+ 'f1_score': 0.5}
+
 ```
 
 3. **Output:**
