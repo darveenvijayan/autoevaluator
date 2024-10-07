@@ -124,3 +124,41 @@ def test_llm_autoeval_with_health_nutrition_statements(model, client):
     assert actual_results['recall'] == expected_results['recall']
     assert actual_results['precision'] == expected_results['precision']
     assert actual_results['f1_score'] == expected_results['f1_score']
+
+# def test_llm_autoeval_with_technological_advancements(model, client):
+#     """Test with some technological advancements."""
+#     claims = "Artificial intelligence has the potential to revolutionize many industries by automating complex tasks and providing insights through data analysis. Quantum computing, which leverages the principles of quantum mechanics, promises to solve problems that are currently intractable for classical computers. The internet was invented in the 1980s and has since become an integral part of modern life, connecting people and information globally."
+#     ground_truths = "Artificial intelligence has the potential to revolutionize many industries by automating complex tasks and providing insights through data analysis. Quantum computing, which leverages the principles of quantum mechanics, promises to solve problems that are currently intractable for classical computers."
+#     model_name = model
+#     expected_results = {
+#         "TP": ["Artificial intelligence has the potential to revolutionize many industries by automating complex tasks and providing insights through data analysis.", "Quantum computing, which leverages the principles of quantum mechanics, promises to solve problems that are currently intractable for classical computers."],
+#         "FP": ["The internet was invented in the 1980s and has since become an integral part of modern life, connecting people and information globally."],
+#         "FN": [],
+#         "recall": 1.0,
+#         "precision": 2/3,
+#         "f1_score": 0.8,
+#     }
+#     actual_results = LLM_autoeval(claims, ground_truths, model_name, client)
+
+#     assert actual_results['recall'] == expected_results['recall']
+#     assert actual_results['precision'] == expected_results['precision']
+#     assert actual_results['f1_score'] == expected_results['f1_score']
+
+def test_llm_autoeval_with_economic_statements(model, client):
+    """Test with some economic statements."""
+    claims = "Inflation occurs when the general price level of goods and services rises, eroding purchasing power. High unemployment rates can lead to decreased consumer spending and slow economic growth. A country's GDP is the total value of all goods and services produced within its borders in a given year, and it is the only measure of economic health."
+    ground_truths = "Inflation occurs when the general price level of goods and services rises, eroding purchasing power. High unemployment rates can lead to decreased consumer spending and slow economic growth."
+    model_name = model
+    expected_results = {
+        "TP": ["Inflation occurs when the general price level of goods and services rises, eroding purchasing power.", "High unemployment rates can lead to decreased consumer spending and slow economic growth."],
+        "FP": ["A country's GDP is the total value of all goods and services produced within its borders in a given year, and it is the only measure of economic health."],
+        "FN": [],
+        "recall": 1.0,
+        "precision": 2/3,
+        "f1_score": 0.8,
+    }
+    actual_results = LLM_autoeval(claims, ground_truths, model_name, client)
+
+    assert actual_results['recall'] == expected_results['recall']
+    assert actual_results['precision'] == expected_results['precision']
+    assert actual_results['f1_score'] == expected_results['f1_score']

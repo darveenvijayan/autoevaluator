@@ -34,9 +34,12 @@ def text_simplifier(text: str, model_name: str, client) -> TextSimplify:
                                
                                IMPORTANT!
                                 - Do not use replace nouns with pronouns.
-                                - Always reuse the names and nouns from the TEXT from user.
+                                - Always reuse the names and nouns from the TEXT from user for clarity.
                                """
             },
+            {"role": "user", "content": f"TEXT: Although the weather forecast predicted heavy rain and strong winds, we decided to go hiking because we had already planned the trip for weeks, and we didn’t want to miss the opportunity to explore the beautiful trails and enjoy the breathtaking views that the mountains had to offer."},
+            {"role": "assistant", "content": """["The weather forecast predicted heavy rain.","The weather forecast predicted strong winds.","The group decided to go hiking.","The group had already planned the trip for weeks.","The group didn't want to miss the opportunity to explore the beautiful trails.","The group wanted to enjoy the breathtaking views that the mountains had to offer."]"""},
+            
             {"role": "user", "content": f"TEXT: {text}"},
         ],
     )
