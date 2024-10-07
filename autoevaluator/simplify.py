@@ -41,7 +41,7 @@ def text_simplifier(text: str, model_name: str, client) -> TextSimplify:
             {"role": "assistant", "content": """["The weather forecast predicted heavy rain.","The weather forecast predicted strong winds.","The group decided to go hiking.","The group had already planned the trip for weeks.","The group didn't want to miss the opportunity to explore the beautiful trails.","The group wanted to enjoy the breathtaking views that the mountains had to offer."]"""},
 
             {"role": "user", "content": f"TEXT: Feynmann was born in the year 1918 in America."},
-            {"role": "assistant", "content": """["Feynmann was born in the year 1918.", "Feynmann was born in America."]},
+            {"role": "assistant", "content": """["Feynmann was born in the year 1918.", "Feynmann was born in America."]"""},
             
             {"role": "user", "content": f"TEXT: {text}"},
         ],
