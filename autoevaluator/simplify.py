@@ -20,7 +20,7 @@ def text_simplifier(text: str, model_name: str, client) -> TextSimplify:
         TextSimplify: A Pydantic model containing a list of simplified sentences.
     """
     if text == "":
-        return []
+        return TextSimplify(simplified_sentences=[])
     completions = client.chat.completions.create(
         model=model_name,
         response_model=TextSimplify,

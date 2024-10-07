@@ -57,10 +57,3 @@ def test_text_simplifier_with_different_model(client, model):
     assert isinstance(result, TextSimplify)
     assert len(result.simplified_sentences) > 0 
 
-
-# client, model =  setup_client()
-# text = ""
-# model_name = model
-# result = text_simplifier(text, model_name, client)
-# assert isinstance(result, TextSimplify)
-# assert len(result.simplified_sentences) == 0
