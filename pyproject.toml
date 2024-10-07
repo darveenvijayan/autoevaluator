@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "autoevaluator"
-version = "0.2.1"
+version = "0.2.2"
 description = ""
 authors = ["Darveen Vijayan <+darveenvijayan.27@gmail.com>"]
 readme = "README.md"
