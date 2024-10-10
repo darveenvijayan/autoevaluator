@@ -7,7 +7,7 @@ from openai import OpenAI, AzureOpenAI
 client, model_name =  setup_client()
 
 
-def evaluate(claim: str, ground_truth: str) -> Dict:
+def evaluate(claim: str, ground_truth: str, client: object = client, model_name: str = "gpt-4o-mini") -> Dict:
     """
     Evaluates a claim against a ground truth using a language model.
 
