@@ -6,8 +6,11 @@ ground_truth = "This is a ground truth statement."
 generated_statement = "This is a generated statement."
 
 def test_evaluate_function():
+
+    client, model_name =  setup_client()
+
     # Call the evaluate function
-    eval_results = evaluate(generated_statement, ground_truth)
+    eval_results = evaluate(generated_statement, ground_truth, client=client)
 
     # Assertions to check the output
     assert isinstance(eval_results, dict), "The output should be a dictionary"

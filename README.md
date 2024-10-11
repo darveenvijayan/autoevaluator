@@ -45,7 +45,10 @@ os.environ["DEPLOYMENT"] = "<azure>/<not-azure>"
 3. **run autoevaluator**
 ```
 # Import the evaluate function from the autoevaluator module
-from autoevaluator import evaluate
+from autoevaluator import evaluate, setup_client
+
+# setup openai client
+client, model =  setup_client()
 
 # Define the claim to be evaluated
 claim = 'Feynmann was born in 1918 in Malaysia'
@@ -54,7 +57,7 @@ claim = 'Feynmann was born in 1918 in Malaysia'
 ground_truth = 'Feynmann was born in 1918 in America.'
 
 # Evaluate the claim against the ground truth
-evaluate(claim, ground_truth)
+evaluate(claim, ground_truth, client=client, model_name = model)
 
 # output
 {'TP': ['Feynmann was born in 1918.'],

@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Dict
 from openai import OpenAI, AzureOpenAI
+from .simplify import text_simplifier
 
 class AutoEval(BaseModel):
     TP: List[str] = Field(..., description="List of True Positive statements")
@@ -56,3 +57,30 @@ def LLM_autoeval(claims: str, ground_truths: str, model_name: str, client: OpenA
     f1_score = 2 * precision * recall / (precision + recall) if precision + recall > 0 else 0
     eval_results['f1_score'] = f1_score
     return eval_results
+
+def evaluate(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_name: str = "gpt-4o-mini") -> Dict:
+    """
+    Evaluates a claim against a ground truth using a language model.
+
+    Args:
+        claim (str): The claim to be evaluated.
+        ground_truth (str): The ground truth statement.
+        model_name (str): The name of the language model to use.
+        client (object): The client object used to interact with the language model.
+
+    Returns:
+        Dict: A dictionary containing the evaluation results (TP, FP, FN, recall, precision, f1_score).
+    """
+
+    # Simplify claim and ground truth
+    simplified_claim = text_simplifier(claim, model_name, client).dict()['simplified_sentences']
+    simplified_ground_truth = text_simplifier(ground_truth, model_name, client).dict()['simplified_sentences']
+
+    # Join sentences into strings
+    claim_string = '\n'.join(simplified_claim)
+    ground_truth_string = '\n'.join(simplified_ground_truth)
+
+    # Perform evaluation
+    evaluation_results = LLM_autoeval(claim_string, ground_truth_string, model_name, client)
+
+    return evaluation_results
