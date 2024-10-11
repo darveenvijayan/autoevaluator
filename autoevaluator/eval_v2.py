@@ -126,8 +126,8 @@ def evaluate(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_
             FP_list.append(key)
         elif value == 'FN':
             FN_list.append(key)
-        elif value == 'TP_':
-            TP_list.append(key)
+        # elif value == 'TP_':
+        #     TP_list.append(key)
 
     result_dict = {
         'TP': TP_list,
