@@ -8,12 +8,12 @@ class QuestionAnswer(BaseModel):
         ..., description="Original sentence"
     )
     q:str = Field(
-        ..., description="Generated question"
+        ..., description="Generated question to fact check"
     )
 
 class QuestionAnswerList(BaseModel):
     QA_list: List[QuestionAnswer] = Field(
-        ..., description="List of sentences with the generated question"
+        ..., description="List of sentences with the generated fact check question"
     )
 
 def question_generator(text: List[str], client: OpenAI | AzureOpenAI, model_name: str = "gpt-4o-mini") -> QuestionAnswerList:
@@ -23,8 +23,9 @@ def question_generator(text: List[str], client: OpenAI | AzureOpenAI, model_name
         messages=[
             {
                 "role": "system",
-                "content": f"""You're an expert in English language! You are also very detailed with your work.
-                               Your task is to generate one question for each sentence in SENTENCE_LIST.
+                "content": f"""You're an expert Fact Checker! You are also very detailed with your work.
+                               Your task is to generate one comprehensive question for each sentence in SENTENCE_LIST.
+                               The generated question should be answerable by Yes or No.
                                """
             },
             {"role": "user", "content": f"SENTENCE_LIST: {text}"},
@@ -38,7 +39,7 @@ class QuestionLabel(BaseModel):
         ..., description="Question")
     
     label: bool = Field(
-        ..., description="True if question can be answered by text, else False")
+        ..., description="True if question can be answered by text correctly, else False")
     
 class QuestionList(BaseModel):
     Q_list: List[QuestionLabel] = Field(
@@ -53,7 +54,7 @@ def question_checker(question_list: List[str], text: str, client: OpenAI | Azure
             {
                 "role": "system",
                 "content": f"""You're an expert in English language! You are also very detailed with your work.
-                               Check if each question in QUESTION_LIST can be answered by the ANSWER_TEXT.
+                               Check if each question in QUESTION_LIST can be answered by the ANSWER_TEXT correctly.
                                label True if question can be answered by text, else label False.
                                """
             },
