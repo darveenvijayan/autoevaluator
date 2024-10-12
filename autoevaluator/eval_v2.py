@@ -85,9 +85,9 @@ def get_classification(claim: str, ground_truth: str, client: OpenAI | AzureOpen
                 qa['label'] = check['label']
 
     # extract the ans and label from q_gen into a new dict called results
-    results = {}
+    results = []
     for qa in q_gen['QA_list']:
-        results[qa['ans']] = qa['label']
+        results.append({qa['ans']: qa['label']})
 
     return results
 
@@ -96,38 +96,40 @@ def evaluate(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_
     claim_results = get_classification(claim, ground_truth, client=client)
 
     # check claim result and replace True with TP and False with FP
-    for key, value in claim_results.items():
-        if value == True:
-            claim_results[key] = 'TP'
-        else:
-            claim_results[key] = 'FP'
+    for claim_result in claim_results:
+        for key, value in claim_result.items():
+            if value == True:
+                claim_result[key] = 'TP'
+            else:
+                claim_result[key] = 'FP'
 
     gt_results = get_classification(ground_truth, claim, client=client)
 
     # check claim result and replace True with TP and False with FP
-    for key, value in gt_results.items():
-        if value == True:
-            gt_results[key] = 'TP_'
-        else:
-            gt_results[key] = 'FN'
+    for gt_result in gt_results:
+        for key, value in gt_result.items():
+            if value == True:
+                gt_result[key] = '_TP'
+            else:
+                gt_result[key] = 'FP'
 
     # combine the dict
-    combined_results = {**claim_results, **gt_results}
+    claim_results.extend(gt_results)
+    combined_results= claim_results
 
     # create adictionary with keys TP, FP and FN and list of sentences as values
     TP_list = []
     FP_list = []
     FN_list = []
 
-    for key, value in combined_results.items():
-        if value == 'TP':
-            TP_list.append(key)
-        elif value == 'FP':
-            FP_list.append(key)
-        elif value == 'FN':
-            FN_list.append(key)
-        # elif value == 'TP_':
-        #     TP_list.append(key)
+    for results in combined_results:
+        for key, value in results.items():
+            if value == 'TP':
+                TP_list.append(key)
+            elif value == 'FP':
+                FP_list.append(key)
+            elif value == 'FN':
+                FN_list.append(key)
 
     result_dict = {
         'TP': TP_list,
