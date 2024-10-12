@@ -111,7 +111,7 @@ def evaluate(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_
             if value == True:
                 gt_result[key] = '_TP'
             else:
-                gt_result[key] = 'FP'
+                gt_result[key] = 'FN'
 
     # combine the dict
     claim_results.extend(gt_results)
