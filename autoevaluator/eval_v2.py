@@ -57,7 +57,6 @@ def question_checker(question_list: List[str], text: str, client: OpenAI | Azure
                 "content": f"""You're an expert in English language! You are also very detailed with your work. Your task is as below: 
                                Check if each question in QUESTION_LIST can be answered by the ANSWER_TEXT correctly.
                                label True if question can be answered by ANSWER_TEXT, else label False.
-                               Label False if there is no information in ANSWER_TEXT to answer question.
                                """
             },
             {"role": "user", "content": f"""QUESTION_LIST: {question_list}
