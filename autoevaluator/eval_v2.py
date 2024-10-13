@@ -25,6 +25,7 @@ def question_generator(text: List[str], client: OpenAI | AzureOpenAI, model_name
                 "role": "system",
                 "content": f"""You're an expert Fact Checker! You are also very detailed with your work.
                                Your task is to generate one comprehensive question for each sentence in SENTENCE_LIST.
+                               Always start the generated question with Is ...
                                The generated question should be answerable by Yes or No.
                                """
             },
@@ -53,9 +54,10 @@ def question_checker(question_list: List[str], text: str, client: OpenAI | Azure
         messages=[
             {
                 "role": "system",
-                "content": f"""You're an expert in English language! You are also very detailed with your work.
+                "content": f"""You're an expert in English language! You are also very detailed with your work. Your task is as below: 
                                Check if each question in QUESTION_LIST can be answered by the ANSWER_TEXT correctly.
-                               label True if question can be answered by text, else label False.
+                               label True if question can be answered by ANSWER_TEXT, else label False.
+                               Label False if there is no information in ANSWER_TEXT to answer question.
                                """
             },
             {"role": "user", "content": f"""QUESTION_LIST: {question_list}
