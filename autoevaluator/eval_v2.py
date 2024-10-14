@@ -68,16 +68,16 @@ def question_checker(question_list: List[str], text: str, client: OpenAI | Azure
 # run analysis
 def get_classification(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_name: str = "gpt-4o-mini"):
     
-    simplified_claim = text_simplifier(claim, model_name, client=client).dict()['simplified_sentences']
+    simplified_claim = text_simplifier(claim, model_name, client=client, model_name=model_name).dict()['simplified_sentences']
 
-    q_gen = question_generator(text=simplified_claim, client=client).dict()
+    q_gen = question_generator(text=simplified_claim, client=client, model_name=model_name).dict()
 
 
     # put the questions in a list
     question_list = [q['q'] for q in q_gen['QA_list']]
 
     # check the questions
-    checks = question_checker(question_list = question_list, text = ground_truth, client=client).dict()
+    checks = question_checker(question_list = question_list, text = ground_truth, client=client, model_name=model_name).dict()
 
     # add labels from checks dict to q_gen dict based on question
     for i, qa in enumerate(q_gen['QA_list']):
@@ -94,7 +94,7 @@ def get_classification(claim: str, ground_truth: str, client: OpenAI | AzureOpen
 
 def evaluate(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_name: str = "gpt-4o-mini"):
 
-    claim_results = get_classification(claim, ground_truth, client=client)
+    claim_results = get_classification(claim, ground_truth, client=client, model_name=model_name)
 
     # check claim result and replace True with TP and False with FP
     for claim_result in claim_results:
@@ -104,7 +104,7 @@ def evaluate(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_
             else:
                 claim_result[key] = 'FP'
 
-    gt_results = get_classification(ground_truth, claim, client=client)
+    gt_results = get_classification(ground_truth, claim, client=client, model_name=model_name)
 
     # check claim result and replace True with TP and False with FP
     for gt_result in gt_results:
