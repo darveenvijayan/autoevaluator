@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "autoevaluator"
-version = "1.0.1"
+version = "1.0.2"
 description = "Fully automated LLM evaluator"
 authors = ["Darveen Vijayan <+darveenvijayan.27@gmail.com>"]
 readme = "README.md"
