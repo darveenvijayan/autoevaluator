@@ -68,7 +68,7 @@ def question_checker(question_list: List[str], text: str, client: OpenAI | Azure
 # run analysis
 def get_classification(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_name: str = "gpt-4o-mini"):
     
-    simplified_claim = text_simplifier(claim, model_name, client=client, model_name=model_name).dict()['simplified_sentences']
+    simplified_claim = text_simplifier(claim, model_name=model_name, client=client).dict()['simplified_sentences']
 
     q_gen = question_generator(text=simplified_claim, client=client, model_name=model_name).dict()
 
