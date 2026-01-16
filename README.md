@@ -58,6 +58,8 @@ pip install -e .
 
 ```python
 import asyncio
+from dotenv import load_dotenv()
+# Load env variables BEFORE importing autoevaluator
 from autoevaluator import evaluate, get_instructor_client
 
 async def main():
@@ -147,6 +149,8 @@ os.environ["AWS_SECRET_ACCESS_KEY"] = "your_aws_secret_key"
 
 ```python
 import asyncio
+from dotenv import load_dotenv()
+# Load env variables BEFORE importing autoevaluator
 from autoevaluator import evaluate, get_instructor_client
 
 async def evaluate_with_openai():
@@ -171,6 +175,8 @@ asyncio.run(evaluate_with_openai())
 
 ```python
 import asyncio
+from dotenv import load_dotenv()
+# Load env variables BEFORE importing autoevaluator
 from autoevaluator import evaluate, get_instructor_client
 
 async def evaluate_with_bedrock():
@@ -190,6 +196,8 @@ print(f"Perfect match! F1 Score: {result['f1_score']}")
 
 ```python
 import asyncio
+from dotenv import load_dotenv()
+# Load env variables BEFORE importing autoevaluator
 from autoevaluator import evaluate, get_instructor_client
 
 async def evaluate_with_anthropic():
@@ -211,6 +219,8 @@ result = asyncio.run(evaluate_with_anthropic())
 
 ```python
 import asyncio
+from dotenv import load_dotenv()
+# Load env variables BEFORE importing autoevaluator
 from autoevaluator import evaluate, get_instructor_client
 
 async def batch_evaluate():
@@ -398,6 +408,8 @@ gemini_client = get_gemini_instructor_client(model="gemini-2.0-flash")
 
 ```python
 import asyncio
+from dotenv import load_dotenv()
+# Load env variables BEFORE importing autoevaluator
 from autoevaluator import evaluate, get_instructor_client
 
 async def safe_evaluate():
