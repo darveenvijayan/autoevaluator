@@ -1,7 +1,7 @@
 from typing import List, Optional, Dict, Union
 from pydantic import BaseModel, Field
-from openai import OpenAI, AzureOpenAI
 from .simplify import text_simplifier
+import instructor
 
 class QuestionAnswer(BaseModel):
     ans:str = Field(
@@ -16,20 +16,36 @@ class QuestionAnswerList(BaseModel):
         ..., description="List of sentences with the generated fact check question"
     )
 
-def question_generator(text: List[str], client: OpenAI | AzureOpenAI, model_name: str = "gpt-4o-mini") -> QuestionAnswerList:
-    completions = client.chat.completions.create(
+async def question_generator(
+    text: List[str], 
+    client: instructor.AsyncInstructor, 
+    model_name: str = "gpt-4o-mini"
+) -> QuestionAnswerList:
+    """Generates fact-checking questions for each sentence in the input list.
+    
+    Args:
+        text: List of sentences to generate questions for
+        client: Instructor-wrapped async client
+        model_name: Model name to use
+        
+    Returns:
+        QuestionAnswerList: List of question-answer pairs
+    """
+    completions = await client.chat.completions.create(
         model=model_name,
         response_model=QuestionAnswerList,
         messages=[
             {
                 "role": "system",
-                "content": f"""You're an expert Fact Checker! You are also very detailed with your work.
-                               Your task is to generate one comprehensive question for each sentence in SENTENCE_LIST.
-                               Always start the generated question with Is ...
-                               The generated question should be answerable by Yes or No.
-                               """
+                "content": """You're an expert Fact Checker! You are also very detailed with your work.
+Your task is to generate one comprehensive question for each sentence in SENTENCE_LIST.
+Always start the generated question with "Is ..."
+The generated question should be answerable by Yes or No."""
             },
-            {"role": "user", "content": f"SENTENCE_LIST: {text}"},
+            {
+                "role": "user", 
+                "content": f"SENTENCE_LIST: {text}"
+            },
         ],
     )
     return completions
@@ -40,44 +56,77 @@ class QuestionLabel(BaseModel):
         ..., description="Question")
     
     label: bool = Field(
-        ..., description="True if question can be answered by text correctly, else False")
+        ..., description="True if question can be answered ONLY by the ANSWER_TEXT correctly, else False. If the statement is True but not stated in the ANSWER_TEXT, it should be False.")
     
 class QuestionList(BaseModel):
     Q_list: List[QuestionLabel] = Field(
         ..., description="List of questions and labels")
     
 
-def question_checker(question_list: List[str], text: str, client: OpenAI | AzureOpenAI, model_name: str = "gpt-4o-mini") -> QuestionList:
-    completions = client.chat.completions.create(
+async def question_checker(
+    question_list: List[str], 
+    text: str, 
+    client: instructor.AsyncInstructor, 
+    model_name: str = "gpt-4o-mini"
+) -> QuestionList:
+    """Checks if questions can be answered by the provided text.
+    
+    Args:
+        question_list: List of questions to check
+        text: Answer text to check against
+        client: Instructor-wrapped async client
+        model_name: Model name to use
+        
+    Returns:
+        QuestionList: List of questions with labels (True/False)
+    """
+    completions = await client.chat.completions.create(
         model=model_name,
         response_model=QuestionList,
         messages=[
             {
                 "role": "system",
-                "content": f"""You're an expert in English language! You are also very detailed with your work. Your task is as below: 
-                               Check if each question in QUESTION_LIST can be answered by the ANSWER_TEXT correctly.
-                               label True if question can be answered by ANSWER_TEXT, else label False.
-                               """
+                "content": """You're an expert in English language! You are also very detailed with your work. Your task is as below: 
+Check if each question in QUESTION_LIST can be answered by the ANSWER_TEXT correctly.
+label True if question can be answered by ANSWER_TEXT, else label False."""
             },
-            {"role": "user", "content": f"""QUESTION_LIST: {question_list}
-                                            ANSWER_TEXT:{text}"""},
+            {
+                "role": "user", 
+                "content": f"""QUESTION_LIST: {question_list}
+ANSWER_TEXT: {text}"""
+            },
         ],
     )
     return completions
 
 # run analysis
-def get_classification(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_name: str = "gpt-4o-mini"):
+async def get_classification(
+    claim: str, 
+    ground_truth: str, 
+    client: instructor.AsyncInstructor, 
+    model_name: str = "gpt-4o-mini"
+):
+    """Classifies claims against ground truth.
     
-    simplified_claim = text_simplifier(claim, model_name=model_name, client=client).dict()['simplified_sentences']
+    Args:
+        claim: The claim text to verify
+        ground_truth: The ground truth text to check against
+        client: Instructor-wrapped async client
+        model_name: Model name to use
+        
+    Returns:
+        List of dictionaries with sentence-label pairs
+    """
+    simplified_claim = (await text_simplifier(claim, model_name=model_name, client=client)).dict()['simplified_sentences']
 
-    q_gen = question_generator(text=simplified_claim, client=client, model_name=model_name).dict()
+    q_gen = (await question_generator(text=simplified_claim, client=client, model_name=model_name)).dict()
 
 
     # put the questions in a list
     question_list = [q['q'] for q in q_gen['QA_list']]
 
     # check the questions
-    checks = question_checker(question_list = question_list, text = ground_truth, client=client, model_name=model_name).dict()
+    checks = (await question_checker(question_list=question_list, text=ground_truth, client=client, model_name=model_name)).dict()
 
     # add labels from checks dict to q_gen dict based on question
     for i, qa in enumerate(q_gen['QA_list']):
@@ -92,9 +141,24 @@ def get_classification(claim: str, ground_truth: str, client: OpenAI | AzureOpen
 
     return results
 
-def evaluate(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_name: str = "gpt-4o-mini"):
-
-    claim_results = get_classification(claim, ground_truth, client=client, model_name=model_name)
+async def evaluate(
+    claim: str, 
+    ground_truth: str, 
+    client: instructor.AsyncInstructor, 
+    model_name: str = "gpt-4o-mini"
+):
+    """Evaluates claim against ground truth and calculates metrics.
+    
+    Args:
+        claim: The claim text to evaluate
+        ground_truth: The ground truth text to check against
+        client: Instructor-wrapped async client
+        model_name: Model name to use
+        
+    Returns:
+        Dictionary with TP, FP, FN lists and precision, recall, f1_score metrics
+    """
+    claim_results = await get_classification(claim, ground_truth, client=client, model_name=model_name)
 
     # check claim result and replace True with TP and False with FP
     for claim_result in claim_results:
@@ -104,7 +168,7 @@ def evaluate(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_
             else:
                 claim_result[key] = 'FP'
 
-    gt_results = get_classification(ground_truth, claim, client=client, model_name=model_name)
+    gt_results = await get_classification(ground_truth, claim, client=client, model_name=model_name)
 
     # check claim result and replace True with TP and False with FP
     for gt_result in gt_results:
