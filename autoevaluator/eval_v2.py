@@ -117,16 +117,16 @@ async def get_classification(
     Returns:
         List of dictionaries with sentence-label pairs
     """
-    simplified_claim = (await text_simplifier(claim, model_name=model_name, client=client)).dict()['simplified_sentences']
+    simplified_claim = (await text_simplifier(claim, model_name=model_name, client=client)).model_dump()['simplified_sentences']
 
-    q_gen = (await question_generator(text=simplified_claim, client=client, model_name=model_name)).dict()
+    q_gen = (await question_generator(text=simplified_claim, client=client, model_name=model_name)).model_dump()
 
 
     # put the questions in a list
     question_list = [q['q'] for q in q_gen['QA_list']]
 
     # check the questions
-    checks = (await question_checker(question_list=question_list, text=ground_truth, client=client, model_name=model_name)).dict()
+    checks = (await question_checker(question_list=question_list, text=ground_truth, client=client, model_name=model_name)).model_dump()
 
     # add labels from checks dict to q_gen dict based on question
     for i, qa in enumerate(q_gen['QA_list']):

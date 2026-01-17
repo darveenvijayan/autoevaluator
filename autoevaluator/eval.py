@@ -41,7 +41,7 @@ def LLM_autoeval(claims: str, ground_truths: str, model_name: str, client: OpenA
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"CLAIMS: {claims}\nTRUTHS: {ground_truths}"},
         ],
-    ).dict()
+    ).model_dump()
 
     tp = len(eval_results['TP'])
     fp = len(eval_results['FP'])
@@ -58,7 +58,7 @@ def LLM_autoeval(claims: str, ground_truths: str, model_name: str, client: OpenA
     eval_results['f1_score'] = f1_score
     return eval_results
 
-def evaluate(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_name: str = "gpt-4o-mini") -> Dict:
+async def evaluate(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_name: str = "gpt-4o-mini") -> Dict:
     """
     Evaluates a claim against a ground truth using a language model.
 
@@ -73,8 +73,8 @@ def evaluate(claim: str, ground_truth: str, client: OpenAI | AzureOpenAI, model_
     """
 
     # Simplify claim and ground truth
-    simplified_claim = text_simplifier(claim, model_name, client).dict()['simplified_sentences']
-    simplified_ground_truth = text_simplifier(ground_truth, model_name, client).dict()['simplified_sentences']
+    simplified_claim = (await text_simplifier(claim, model_name, client)).model_dump()['simplified_sentences']
+    simplified_ground_truth = (await text_simplifier(ground_truth, model_name, client)).model_dump()['simplified_sentences']
 
     # Join sentences into strings
     claim_string = '\n'.join(simplified_claim)
