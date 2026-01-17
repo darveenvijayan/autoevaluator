@@ -20,19 +20,6 @@ AutoEvaluator is a powerful Python library that accelerates LLM output quality c
 - **Structured Outputs**: Leverages Instructor for type-safe, validated responses
 - **Sentence-Level Granularity**: Evaluates claims at the sentence level for detailed insights
 
-## 📋 Table of Contents
-
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Supported Providers](#supported-providers)
-- [Configuration](#configuration)
-- [Usage Examples](#usage-examples)
-- [API Reference](#api-reference)
-- [How It Works](#how-it-works)
-- [Advanced Usage](#advanced-usage)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## 🔧 Installation
 
 ### Requirements
@@ -215,7 +202,41 @@ async def evaluate_with_anthropic():
 result = asyncio.run(evaluate_with_anthropic())
 ```
 
-### Example 4: Batch Evaluation
+### Example 4: Using Google Gemini
+
+```python
+import asyncio
+from dotenv import load_dotenv
+load_dotenv()  # Load env variables BEFORE importing autoevaluator
+from autoevaluator import evaluate, get_instructor_client
+
+async def evaluate_with_gemini():
+    client = get_instructor_client(
+        provider="gemini",
+        model="gemini-2.0-flash-exp"
+    )
+    
+    claim = "The speed of light is approximately 300,000 km/s in a vacuum."
+    ground_truth = "The speed of light is approximately 300,000 kilometers per second in a vacuum."
+    
+    result = await evaluate(
+        claim=claim,
+        ground_truth=ground_truth,
+        client=client,
+        model_name="gemini-2.0-flash-exp"
+    )
+    
+    print(f"True Positives: {result['TP']}")
+    print(f"False Positives: {result['FP']}")
+    print(f"False Negatives: {result['FN']}")
+    print(f"F1 Score: {result['f1_score']:.2f}")
+    
+    return result
+
+result = asyncio.run(evaluate_with_gemini())
+```
+
+### Example 5: Batch Evaluation
 
 ```python
 import asyncio
